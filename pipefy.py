@@ -17,7 +17,6 @@ class Pipefy(object):
         self.endpoint = 'https://app.pipefy.com/queries'
         if mock_server:
             self.endpoint = 'https://private-a6c28-pipefypipe.apiary-mock.com/queries'
-    
 
     def request(self, query, headers={}):
         _headers = self.headers
@@ -85,7 +84,7 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('clonePipes', {}).get('pipe', [])
 
 
-    def createPipe(self, organization_id, name, labels=[], members=[], phases=[], 
+    def createPipe(self, organization_id, name, labels=[], members=[], phases=[],
                             start_form_fields=[], preferences={},  response_fields=None, headers={}):
         """ Create pipe: Mutation to create a pipe, in case of success a query is returned. """
 
@@ -117,8 +116,8 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('createPipe', {}).get('pipe', [])
 
 
-    def updatePipe(self, id, icon=None, title_field_id=None, public=None, public_form=None, 
-                        only_assignees_can_edit_cards=None,  anyone_can_create_card=None, 
+    def updatePipe(self, id, icon=None, title_field_id=None, public=None, public_form=None,
+                        only_assignees_can_edit_cards=None,  anyone_can_create_card=None,
                         expiration_time_by_unit=None, expiration_unit=None, response_fields=None, headers={}):
         """ Update pipe: Mutation to update a pipe, in case of success a query is returned. """
 
@@ -176,7 +175,7 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('phase')
 
 
-    def createPhase(self, pipe_id, name, done, lateness_time, description, can_receive_card_directly_from_draft, 
+    def createPhase(self, pipe_id, name, done, lateness_time, description, can_receive_card_directly_from_draft,
                             response_fields=None, headers={}):
         """ Create phase: Mutation to create a phase, in case of success a query is returned. """
 
@@ -206,7 +205,7 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('createPhase', {}).get('phase')
 
 
-    def updatePhase(self, id, name, done, description, can_receive_card_directly_from_draft, 
+    def updatePhase(self, id, name, done, description, can_receive_card_directly_from_draft,
                             response_fields=None, headers={}):
         """ Update phase: Mutation to update a phase, in case of success a query is returned. """
 
@@ -593,8 +592,8 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('pipe_relations')
 
 
-    def createPipeRelation(self, parentId, childId, name, allChildrenMustBeDoneToFinishParent, childMustExistToMoveParent, 
-            childMustExistToFinishParent, allChildrenMustBeDoneToMoveParent, canCreateNewItems, canConnectExistingItems, 
+    def createPipeRelation(self, parentId, childId, name, allChildrenMustBeDoneToFinishParent, childMustExistToMoveParent,
+            childMustExistToFinishParent, allChildrenMustBeDoneToMoveParent, canCreateNewItems, canConnectExistingItems,
             canConnectMultipleItems, response_fields=None, headers={}):
         """ Create pipe relation: Mutation to create a pipe relation between two pipes, in case of success a query is returned. """
 
@@ -632,8 +631,8 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('createPipeRelation', {}).get('pipeRelation')
 
 
-    def updatePipeRelation(self, id, name, allChildrenMustBeDoneToFinishParent, childMustExistToMoveParent, 
-            childMustExistToFinishParent, allChildrenMustBeDoneToMoveParent, canCreateNewItems, canConnectExistingItems, 
+    def updatePipeRelation(self, id, name, allChildrenMustBeDoneToFinishParent, childMustExistToMoveParent,
+            childMustExistToFinishParent, allChildrenMustBeDoneToMoveParent, canCreateNewItems, canConnectExistingItems,
             canConnectMultipleItems, response_fields=None, headers={}):
         """ Update pipe relation: Mutation to update a pipe relation, in case of success a query is returned. """
 
@@ -732,7 +731,7 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('createTable', {}).get('table')
 
 
-    def updateTable(self, id, name, description, public, authorization, icon, create_record_button_label, 
+    def updateTable(self, id, name, description, public, authorization, icon, create_record_button_label,
             title_field_id, public_form, summary_attributes,  response_fields=None, headers={}):
         """ Update table: Mutation to update a table, in case of success a query is returned. """
 
@@ -935,7 +934,6 @@ class Pipefy(object):
             'fields_attributes': self.__prepare_json_list(fields_attributes),
             'response_fields': response_fields,
         }
-        print(query)
         return self.request(query, headers).get('data', {}).get('createTableRecord', {}).get('table_record')
 
 
