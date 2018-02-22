@@ -18,6 +18,7 @@ class Pipefy(object):
         if mock_server:
             self.endpoint = 'https://private-a6c28-pipefypipe.apiary-mock.com/queries'
 
+
     def request(self, query, headers={}):
         _headers = self.headers
         _headers.update(headers)
@@ -25,7 +26,11 @@ class Pipefy(object):
             self.endpoint,
             json={ "query": query },
             headers=_headers
-        ).json()
+        )
+        try:
+            response = json.loads(response.text)
+        except ValueError:
+            raise PipefyException(response.text)
 
         if response.get('error'):
             raise PipefyException(response.get('error_description', response.get('error')))
@@ -41,6 +46,7 @@ class Pipefy(object):
         for field in rex.findall(data_response):
             data_response = data_response.replace('"%s"' % field, field)
         return data_response
+
 
     def __prepare_json_list(self, data_list):
         return '[ %s ]' % ', '.join([self.__prepare_json_dict(data) for data in data_list])
