@@ -895,7 +895,7 @@ class Pipefy(object):
     def table_records(self, table_id, first=10, response_fields=None, headers={}):
         """ List table records: Get table records with pagination through table id. """
 
-        response_fields = response_fields or '{ edges { cursor node { id title url } } pageInfo { endCursor hasNextPage hasPreviousPage startCursor } }'
+        response_fields = response_fields or 'edges { cursor node { id title url } } pageInfo { endCursor hasNextPage hasPreviousPage startCursor }'
         query = '{ table_records(first: %(first)s, table_id: %(table_id)s) { %(response_fields)s } }' % {
             'first': json.dumps(first),
             'table_id': json.dumps(table_id),
