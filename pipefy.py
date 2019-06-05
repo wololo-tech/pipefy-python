@@ -909,7 +909,7 @@ class Pipefy(object):
 
         response_fields = response_fields or 'assignees { id name } created_at created_by { id name } due_date' \
             ' finished_at id labels { id name } parent_relations { name source_type } record_fields { array_value ' \
-            'date_value datetime_value filled_at float_value name required updated_at value } summary { title value } ' \
+            'field {id} date_value datetime_value filled_at float_value name required updated_at value } summary { title value } ' \
             'table { id } title updated_at url }'
         query = '{ table_record(id: %(id)s) { %(response_fields)s } }' % {
             'id': json.dumps(id),
