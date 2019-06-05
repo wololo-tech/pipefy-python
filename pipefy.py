@@ -13,7 +13,7 @@ class Pipefy(object):
 
     def __init__(self, token, mock_server=False):
         self.token = token if 'Bearer' in token else 'Bearer %s' % token
-        self.headers = {'Content-Type': 'application/json', 'Authorization': token}
+        self.headers = {'Content-Type': 'application/json', 'Authorization': self.token}
         self.endpoint = 'https://app.pipefy.com/queries'
         if mock_server:
             self.endpoint = 'https://private-a6c28-pipefypipe.apiary-mock.com/queries'
