@@ -993,7 +993,7 @@ class Pipefy(object):
         """ Delete table record: Mutation to delete a table record, in case of success a query with the field success is returned. """
 
         response_fields = response_fields or 'success'
-        query = 'mutation { deleteTableRecord(input: { id: %(id)s }) { %(response_fields)s }' % {
+        query = 'mutation { deleteTableRecord(input: { id: %(id)s }) { %(response_fields)s } }' % {
             'id': json.dumps(id),
             'response_fields': response_fields,
         }
