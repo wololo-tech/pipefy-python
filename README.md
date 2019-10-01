@@ -194,6 +194,18 @@ Pipefy.cards(self, pipe_id, count=10, search={}, response_fields=None, headers={
 ```
 List cards: Get cards by pipe identifier. 
 
+### allCards
+
+```python
+Pipefy.allCards(self, pipe_id, filter="", response_fields=None, headers={})
+```
+List cards: Get all cards by pipe identifier and specific filters (any field and operators). 
+
+Example of use:
+
+pipefy.allCards("821643",
+        filter='{field: "updated_at", operator: gt, value: 2018-08-01T23:50:11-03:00}')
+
 ### createCard
 
 ```python

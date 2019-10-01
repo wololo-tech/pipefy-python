@@ -14,7 +14,7 @@ class Pipefy(object):
     def __init__(self, token, mock_server=False):
         self.token = token if 'Bearer' in token else 'Bearer %s' % token
         self.headers = {'Content-Type': 'application/json', 'Authorization': self.token}
-        self.endpoint = 'https://app.pipefy.com/queries'
+        self.endpoint = 'https://app.pipefy.com/graphql'
         if mock_server:
             self.endpoint = 'https://private-a6c28-pipefypipe.apiary-mock.com/queries'
 
@@ -173,7 +173,7 @@ class Pipefy(object):
     def phase(self, id, response_fields=None, headers={}):
         """ Show phase: Get a phase by its identifier. """
 
-        response_fields = response_fields or 'id name cards_count cards { edges { node { id title } } } fields { id } }'
+        response_fields = response_fields or 'id name cards_count cards { edges { node { id title } } } fields { id } '
         query = '{ phase(id: %(id)s) { %(response_fields)s } }' % {
             'id': json.dumps(id),
             'response_fields': response_fields,
@@ -392,13 +392,27 @@ class Pipefy(object):
         }
         return self.request(query, headers).get('data', {}).get('cards', [])
 
+    
+    def allCards(self, pipe_id, filter="", response_fields=None, headers={}):
+        """ List cards: Get cards by pipe identifier. """
+
+        response_fields = response_fields or 'edges { node { id title assignees { id }' \
+                ' comments { text } comments_count current_phase { name } done due_date ' \
+                'fields { name value } labels { name } phases_history { phase { name } firstTimeIn lastTimeOut } url } }'
+        query = '{ allCards(pipeId: %(pipe_id)s, filter: %(filter)s) { %(response_fields)s } }' % {
+            'pipe_id': json.dumps(pipe_id),
+            'filter': filter,
+            'response_fields': response_fields,
+        }
+        return self.request(query, headers).get('data', {}).get('allCards', [])
+
 
     def card(self, id, response_fields=None, headers={}):
         """ Show card: Get a card by its identifier. """
 
         response_fields = response_fields or 'title assignees { id } comments { id } comments_count' \
                 ' current_phase { name } done due_date fields { name value } labels { name } phases_history ' \
-                '{ phase { name } firstTimeIn lastTimeOut } url }'
+                '{ phase { name } firstTimeIn lastTimeOut } url '
         query = '{ card(id: %(id)s) { %(response_fields)s } }' % {
             'id': json.dumps(id),
             'response_fields': response_fields,
@@ -892,17 +906,17 @@ class Pipefy(object):
         return self.request(query, headers).get('data', {}).get('deleteTableField', {})
 
 
-    def table_records(self, table_id, first=10, response_fields=None, headers={}):
+    def table_records(self, table_id, first=10, response_fields=None, headers={}, search={}):
         """ List table records: Get table records with pagination through table id. """
 
         response_fields = response_fields or 'edges { cursor node { id title url } } pageInfo { endCursor hasNextPage hasPreviousPage startCursor }'
-        query = '{ table_records(first: %(first)s, table_id: %(table_id)s) { %(response_fields)s } }' % {
+        query = '{ table_records(first: %(first)s, table_id: %(table_id)s, search: %(search)s) { %(response_fields)s } }' % {
             'first': json.dumps(first),
             'table_id': json.dumps(table_id),
             'response_fields': response_fields,
+            'search': self.__prepare_json_dict(search),
         }
         return self.request(query, headers).get('data', {}).get('table_records')
-
 
     def table_record(self, id, response_fields=None, headers={}):
         """ Show table record: Get table record through table record id. """
@@ -911,12 +925,11 @@ class Pipefy(object):
             ' finished_at id labels { id name } parent_relations { name source_type } record_fields { array_value ' \
             'field {id} date_value datetime_value filled_at float_value name required updated_at value } summary { title value } ' \
             'table { id } title updated_at url }'
-        query = '{ table_record(id: %(id)s) { %(response_fields)s } }' % {
+        query = '{ table_record(id: %(id)s) { %(response_fields)s } ' % {
             'id': json.dumps(id),
             'response_fields': response_fields,
         }
         return self.request(query, headers).get('data', {}).get('table_record')
-
 
     def createTableRecord(self, table_id, title='', due_date=None, fields_attributes=[], response_fields=None, headers={}):
         """ Create table record: Mutation to create a table record, in case of success a query is returned. """
@@ -993,7 +1006,7 @@ class Pipefy(object):
         """ Delete table record: Mutation to delete a table record, in case of success a query with the field success is returned. """
 
         response_fields = response_fields or 'success'
-        query = 'mutation { deleteTableRecord(input: { id: %(id)s }) { %(response_fields)s } }' % {
+        query = 'mutation { deleteTableRecord(input: { id: %(id)s }) { %(response_fields)s }}' % {
             'id': json.dumps(id),
             'response_fields': response_fields,
         }
