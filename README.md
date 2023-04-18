@@ -358,6 +358,12 @@ Pipefy.setTableFieldOrder(self, table_id, field_ids, response_fields=None, heade
 ```
 Set table record field value Mutation to set a table field order, in case of success a query with the field success is returned. 
 
+### createPresignedUrl
+```python
+Pipefy.createPresignedUrl(self, organization_id, filename, headers={})
+```
+You will need to use the createPresignedUrl to get the URL, this mutation returns the URL where will be possible to upload a file.
+
 ## Examples
 
 ### Get phases from an specific Pipe

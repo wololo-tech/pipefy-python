@@ -1011,3 +1011,19 @@ class Pipefy(object):
             'response_fields': response_fields,
         }
         return self.request(query, headers).get('data', {}).get('deleteTableRecord', {})
+
+    def createPresignedUrl(self, organization_id, filename, headers={}):
+        """ Create a pre-signed URL to upload a file. """
+
+        query = ''' 
+            mutation {
+              createPresignedUrl(input: { organizationId: %(organization_id)s, fileName: %(filename)s }){
+                clientMutationId
+                url
+              }
+            }
+        ''' % {
+            'organization_id': json.dumps(organization_id),
+            'filename': json.dumps(filename),
+        }
+        return self.request(query, headers).get('data', {}).get('createPresignedUrl', {}).get('url')
